@@ -1,9 +1,13 @@
 "use client"
 
+import { IUser } from '@/types';
 import axios from 'axios';
-import React, { createContext, useContext, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 interface AuthContextType {
   isAuthenticated: boolean;
+  user: IUser | null;
   login: (email: string, password: string) => void;
   logout: () => void;
 }
@@ -12,6 +16,19 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<IUser | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const userCookie = document.cookie.split('; ').find(row => row.startsWith('user='));
+    if (userCookie) {
+      const user = JSON.parse(userCookie.split('=')[1]);
+      if (user && user.email) {
+        setUser(user);
+        setIsAuthenticated(true);
+      }
+    }
+  }, []);
 
   const login = async (email: string, password: string) => {
     const response = await axios.post('/api/auth/login', { email, password });
@@ -19,16 +36,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const user = response.data.user;
       document.cookie = `user=${JSON.stringify(user)}; path=/; ${process.env.NODE_ENV === 'production' ? 'secure;' : ''} samesite=lax`;
       setIsAuthenticated(true);
+      toast.success('Giriş başarılı');
+      router.push('/admin/dashboard');
     } else {
-      console.error('Login failed');
-    } 
+      toast.error('Giriş başarısız');
+    }
   };
+
+
   const logout = () => {
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

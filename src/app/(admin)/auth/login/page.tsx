@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/context/AuthProvider";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 const AdminLoginPage = () => {
   const { isAuthenticated, login } = useAuth();
@@ -14,20 +15,22 @@ const AdminLoginPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!e.currentTarget) return;
     const formData = new FormData(e.currentTarget as HTMLFormElement);
     const email = formData.get("adminEmail") as string;
     const password = formData.get("adminPassword") as string;
     try {
+      if (!email || !password) {
+        toast.error("Email and password are required");
+        return;
+      }
       await login(email, password);
     } catch (error) {
-      console.error("Login failed:", error);
+      toast.error("Login error: " + error);
     }
   };
 
   if (isAuthenticated) {
     router.push("/admin/dashboard");
-    return null;
   }
 
   return (
@@ -40,11 +43,21 @@ const AdminLoginPage = () => {
         >
           <div className="flex flex-col gap-1">
             <Label htmlFor="adminEmail">Email</Label>
-            <Input id="adminEmail" type="email" placeholder="Email" />
+            <Input
+              id="adminEmail"
+              name="adminEmail"
+              type="email"
+              placeholder="Email"
+            />
           </div>
           <div className="flex flex-col gap-1">
             <Label htmlFor="adminPassword">Şifre</Label>
-            <Input id="adminPassword" type="password" placeholder="••••••••" />
+            <Input
+              id="adminPassword"
+              name="adminPassword"
+              type="password"
+              placeholder="••••••••"
+            />
           </div>
           <div className="flex">
             <Button variant={"outline"} type="submit">

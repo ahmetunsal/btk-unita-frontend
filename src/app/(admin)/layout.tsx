@@ -1,5 +1,6 @@
 import { AuthProvider } from "@/context/AuthProvider";
 import "../globals.css";
+import { Toaster } from "sonner";
 
 export const metadata = {
   title: "Next.js",
@@ -14,7 +15,10 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <body className="dark">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );

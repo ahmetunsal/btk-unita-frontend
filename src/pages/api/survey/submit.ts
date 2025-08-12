@@ -1,14 +1,17 @@
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+type Question = {
+  id: string;
+  title: string;
+  description?: string;
+  type: string;
+  options: string[];
+};
+
 type ResponseData = {
   message: string;
-  user?: {
-    id: string;
-    email: string;
-    username: string;
-    role: string;
-  };
+  questions?: Question[];
 };
 
 export default async function handler(
@@ -25,35 +28,26 @@ export default async function handler(
     return res.status(500).json({ message: "API URL is not configured" });
   }
 
-  console.log("API URL:", API_URL);
-
   try {
-    const { email, password } = req.body;
+    const { uniqueId, answers } = req.body;
 
-    console.log("Login request body:", { email, password });
-
-    const response = await axios.post(`${API_URL}/auth/login`, {
-      email,
-      password,
+    const response = await axios.post(`${API_URL}/surveys`, {
+      token: uniqueId,
+      answers,
     });
 
+    console.log("Response status:", response.status);
 
     if (!response || !response.data) {
-      return res.status(500).json({ message: "Login failed" });
+      return res.status(500).json({ message: "Survey.POST failed" });
     }
-    
 
     return res.status(200).json({
-      message: "Login successful",
-      user: {
-        id: response.data.id,
-        email: response.data.email,
-        username: response.data.username,
-        role: response.data.role,
-      },
+      message: "Survey submitted successfully",
+      questions: response.data.question || [],
     });
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("Survey.POST error:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
