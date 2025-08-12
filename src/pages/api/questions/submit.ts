@@ -29,7 +29,7 @@ export default async function handler(
   }
 
   try {
-    const { id, title, description, type, options, user } = req.body;
+    const { id, title, description, type, options } = req.body;
 
     const response = await axios.post(`${API_URL}/questions`, {
       id,

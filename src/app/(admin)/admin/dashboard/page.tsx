@@ -8,9 +8,8 @@ import { IQuestion, questionTypeValues } from "@/types";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-const page = () => {
+const Dashboard = () => {
   const { isAuthenticated } = useAuth();
-  const [surveyData, setSuveyData] = useState();
   const [questions, setQuestions] = useState<IQuestion[]>([]);
 
   useEffect(() => {
@@ -80,4 +79,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Dashboard;

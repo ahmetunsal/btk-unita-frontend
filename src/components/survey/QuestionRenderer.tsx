@@ -123,7 +123,7 @@ const QuestionRenderer = ({
     case "single":
       return (
         <SingleChoice
-          options={options!!}
+          options={options || []}
           selectedOption={
             answers.find((answer) => answer.questionId === currentQuestion.id)
               ?.answer || ""
@@ -135,7 +135,7 @@ const QuestionRenderer = ({
     case "multiple":
       return (
         <MultipleChoice
-          options={options!!}
+          options={options || []}
           selectedOptions={
             (answers.find((answer) => answer.questionId === currentQuestion.id)
               ?.answer as string[]) || []

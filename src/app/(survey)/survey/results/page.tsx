@@ -2,16 +2,8 @@
 
 import Loading from "@/components/other/Loading";
 import CollapsibleMap from "@/components/results/Why";
-import Why from "@/components/results/Why";
-import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import axios from "axios";
-import { CheckCircle, ChevronsUpDown, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 /*
 
@@ -59,7 +51,7 @@ type SurveyResults = {
   strategy: string;
 };
 
-const page = () => {
+const SurveyResults = () => {
   const [data, setData] = useState<SurveyResults | null>(null);
 
   useEffect(() => {
@@ -98,7 +90,7 @@ const page = () => {
                 Anket Sonuçları
               </h1>
               <span className="text-sm text-gray-400">
-                *Sonuçlar Gemini'nin önerileriyle oluşturulmuştur.
+                *Sonuçlar Gemini&apos;nin önerileriyle oluşturulmuştur.
               </span>
             </div>
             <div className="w-full flex flex-col gap-4 items-center justify-center">
@@ -149,7 +141,7 @@ const page = () => {
               </ul>
               <div className="flex flex-col gap-2 w-full text-justify md:w-1/2 p-4 bg-zinc-900 rounded-md">
                 <h2 className="text-lg font-semibold">
-                  Gemini'nin önerdiği strateji
+                  Gemini&apos;nin önerdiği strateji
                 </h2>
                 {data.strategy && (
                   <span className="text-sm text-gray-200">{data.strategy}</span>
@@ -165,4 +157,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default SurveyResults;

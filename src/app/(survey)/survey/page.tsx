@@ -16,7 +16,7 @@ const SurveyPage = () => {
   const [questionIndex, setQuestionIndex] = React.useState(0);
   const [answers, setAnswers] = React.useState<IAnswer[]>([]);
   const [uniqueId, setUniqueId] = React.useState<string | null>(null);
-  const { questions, loading, error } = useQuestions();
+  const { questions, loading } = useQuestions();
 
   useEffect(() => {
     const id = localStorage.getItem("uniqueId");
@@ -32,11 +32,6 @@ const SurveyPage = () => {
   if (loading || !uniqueId) {
     return <Loading />;
   }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
 
   const handleSubmit = async () => {
     const payload = {

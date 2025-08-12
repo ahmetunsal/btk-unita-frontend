@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 export const useQuestions = () => {
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
 
   useEffect(() => {
@@ -14,8 +13,8 @@ export const useQuestions = () => {
       try {
         const response = await axios.get("/api/questions/questions");
         setQuestions(response.data.questions);
-      } catch (error) {
-        setError("Failed to fetch questions");
+      } catch {
+        // Handle error silently or add error handling if needed
       } finally {
         setLoading(false);
       }
@@ -24,5 +23,5 @@ export const useQuestions = () => {
     fetchQuestions();
   }, []);
 
-  return { questions, loading, error };
+  return { questions, loading };
 };

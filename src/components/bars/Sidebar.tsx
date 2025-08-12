@@ -1,10 +1,5 @@
 import {
   BadgeQuestionMark,
-  Calendar,
-  Home,
-  Inbox,
-  Search,
-  Settings,
 } from "lucide-react";
 
 import {
